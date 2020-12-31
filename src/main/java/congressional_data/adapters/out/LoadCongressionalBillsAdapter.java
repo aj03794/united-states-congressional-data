@@ -35,30 +35,16 @@ public class LoadCongressionalBillsAdapter implements LoadCongressionalBillsPort
 
     XmlMapper xmlMapper = new XmlMapper();
 
-//    @Override
-//    public List<CongressionalBill> getAllCongressionalBills() {
-//        if (this.congressionalBills == null) {
-//            List<File> congressionalBillsInZip = new ArrayList<>();
-//            for (BillStartLocations billStartLocation: BillStartLocations.values()) {
-//                File zip = grabZip(billStartLocation.name(), "BILLSTATUS-116-" + billStartLocation + ".zip");
-//                congressionalBillsInZip.add(zip);
-//            }
-//            unzip(congressionalBillsInZip);
-//            this.congressionalBills = deserializeCongressionalBills(congressionalBillsInZip);
-//        }
-//        return this.congressionalBills;
-//    }
-
     @Override
     public List<CongressionalBill> getAllCongressionalBills() {
         if (this.congressionalBills.isEmpty()) {
             List<CompletableFuture<File>> zips = new ArrayList<>();
             for (BillStartLocations billStartLocation: BillStartLocations.values()) {
                 CompletionStage<File> zip = grabZipAsync(billStartLocation.name(), "BILLSTATUS-116-" + billStartLocation + ".zip");
-                zip.thenApply((File file) -> {
+                zip.thenApplyAsync((File file) -> {
                     unzipAsync(file.getAbsolutePath());
                     return file;
-                }).thenAccept((File file) -> {
+                }).thenAcceptAsync((File file) -> {
                     List<CongressionalBill> congressionalBills = deserializeCongressionalBillsInFolder(file);
                     this.congressionalBills.addAll(congressionalBills);
                 });
@@ -85,60 +71,23 @@ public class LoadCongressionalBillsAdapter implements LoadCongressionalBillsPort
         return multipartService.grabZipAsync(congressionalHouse, zipName);
     }
 
-    private void unzip(List<File> congressionalBillsInZips) {
-        congressionalBillsInZips.forEach((File file) -> ZipUtil.explode(new File(file.getAbsolutePath())));
-    }
-
     private void unzipAsync(String congressionalBillsZipFilepath) {
         ZipUtil.explode(new File(congressionalBillsZipFilepath));
     }
 
-    private List<CongressionalBill> deserializeCongressionalBills(List<File> folders) {
-        List<File> allFiles = new ArrayList<>();
-        for (File folder : folders) {
-            File[] filesInFolder = folder.listFiles();
-            allFiles.addAll(Arrays.asList(filesInFolder));
-        }
-
-        List<CongressionalBill> congressionalBills = new ArrayList<>();
-        for (File file : allFiles) {
-            try {
-                byte[] rawBillContents = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
-                String readContent = new String(rawBillContents);
-                CongressionalBill congressionalBill = xmlMapper.readValue(readContent, CongressionalBill.class);
-                congressionalBills.add(congressionalBill);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return congressionalBills;
-    }
 
         private List<CongressionalBill> deserializeCongressionalBillsInFolder(File folder) {
-//            List<CongressionalBill> congressionalBills = new ArrayList<>();
             return Arrays.stream(folder.listFiles()).parallel().map((File file) -> {
                 CongressionalBill congressionalBill = null;
                 try {
                     byte[] rawBillContents = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
                     String readContent = new String(rawBillContents);
                     congressionalBill = xmlMapper.readValue(readContent, CongressionalBill.class);
-//                    congressionalBills.add(congressionalBill);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 return congressionalBill;
             }).collect(Collectors.toList());
-//            for (File file : folder.listFiles()) {
-//                try {
-//                    byte[] rawBillContents = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
-//                    String readContent = new String(rawBillContents);
-//                    CongressionalBill congressionalBill = xmlMapper.readValue(readContent, CongressionalBill.class);
-//                    congressionalBills.add(congressionalBill);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            return congressionalBills;
         }
 
 }
