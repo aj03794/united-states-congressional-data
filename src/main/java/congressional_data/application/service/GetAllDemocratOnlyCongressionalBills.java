@@ -8,17 +8,15 @@ import javax.inject.Inject;
 import java.util.List;
 
 @ApplicationScoped
-public class GetAllDemocratOnlyCongressionalBills {
+public class GetAllDemocratOnlyCongressionalBills extends GetCongressionalBillsQuery {
 
-    private final LoadCongressionalBillsPort loadCongressionalBillsPort;
 
     @Inject
     public GetAllDemocratOnlyCongressionalBills(LoadCongressionalBillsPort loadCongressionalBillsPort) {
-        this.loadCongressionalBillsPort = loadCongressionalBillsPort;
+        super(loadCongressionalBillsPort);
     }
 
-    public Integer execute() {
-        List<CongressionalBill> congressionalBills = loadCongressionalBillsPort.getAllCongressionalBills();
+    public int execute() {
         return (int) congressionalBills.stream().filter(CongressionalBill::isDemocrat).count();
     }
 }

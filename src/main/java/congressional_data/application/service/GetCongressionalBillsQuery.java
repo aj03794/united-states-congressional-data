@@ -15,7 +15,7 @@ public abstract class GetCongressionalBillsQuery {
 
     @Inject
     public GetCongressionalBillsQuery(LoadCongressionalBillsPort loadCongressionalBillsPort) {
-        this.congressionalBills = loadCongressionalBillsPort.getAllCongressionalBills();
+        this.congressionalBills = loadCongressionalBillsPort.getAllCongressionalBills(List.of("115", "116"));
     }
 
     // This is where the user of this baseclass should override and build their logic
