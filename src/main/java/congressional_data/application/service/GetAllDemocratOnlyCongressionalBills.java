@@ -5,7 +5,6 @@ import congressional_data.domain.CongressionalBill;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.List;
 
 @ApplicationScoped
 public class GetAllDemocratOnlyCongressionalBills extends GetCongressionalBillsQuery {
@@ -16,6 +15,7 @@ public class GetAllDemocratOnlyCongressionalBills extends GetCongressionalBillsQ
         super(loadCongressionalBillsPort);
     }
 
+    @Override
     public int execute() {
         return (int) congressionalBills.stream().filter(CongressionalBill::isDemocrat).count();
     }

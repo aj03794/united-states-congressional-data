@@ -1,20 +1,23 @@
 package congressional_data.application.service;
 
 import congressional_data.application.ports.out.LoadCongressionalBillsPort;
+import congressional_data.domain.CongressionalBill;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.function.Function;
 
 @ApplicationScoped
-public class GetTotalCongressionalBills extends GetCongressionalBillsQuery {
+public class GetTotalCongressionalBills {
 
-    @Inject
-    public GetTotalCongressionalBills(LoadCongressionalBillsPort loadCongressionalBillsPort) {
-        super(loadCongressionalBillsPort);
+    GetCongressionalBillsQueryComposition getCongressionalBillsQueryComposition;
+
+    public GetTotalCongressionalBills(GetCongressionalBillsQueryComposition getCongressionalBillsQueryComposition) {
+        this.getCongressionalBillsQueryComposition = getCongressionalBillsQueryComposition;
     }
 
-    @Override
     public int execute() {
-        return this.congressionalBills.size();
+        Function<CongressionalBill, Boolean> query = congressionalBill -> true;
+        return this.getCongressionalBillsQueryComposition.execute(query);
     }
 }

@@ -4,8 +4,6 @@ import congressional_data.application.ports.out.LoadCongressionalBillsPort;
 import congressional_data.domain.CongressionalBill;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import java.util.List;
 
 @ApplicationScoped
 public class GetAllIndependentOnlyCongressionalBills extends GetCongressionalBillsQuery {
@@ -14,6 +12,7 @@ public class GetAllIndependentOnlyCongressionalBills extends GetCongressionalBil
         super(loadCongressionalBillsPort);
     }
 
+    @Override
     public int execute() {
         return (int) this.congressionalBills.stream().filter(CongressionalBill::isIndependent).count();
     }
