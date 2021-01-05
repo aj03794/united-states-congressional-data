@@ -24,6 +24,8 @@ public class Bill {
     public String committeeReports;
     public String relatedBills;
     public String actions;
+//    @JacksonXmlElementWrapper(localName = "actions")
+//    public List<ActionItem> actionItem;
     @JacksonXmlElementWrapper(localName = "sponsors")
     public List<Item> sponsors;
     @JacksonXmlElementWrapper(localName = "cosponsors")

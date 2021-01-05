@@ -5,5 +5,5 @@ import congressional_data.domain.CongressionalBill;
 import java.util.List;
 
 public interface LoadCongressionalBillsPort {
-    List<CongressionalBill> getAllCongressionalBills();
+    List<CongressionalBill> getAllCongressionalBills(List<String> congresses);
 }

@@ -11,7 +11,7 @@ import javax.inject.Inject;
 public class ApplicationTests {
 
     @Inject
-    GetBipartisanCongressionalBills getBipartisanCongressionalBills;
+    GetCongressionalBillsQueryRefactor getBipartisanCongressionalBills;
 
     @Inject
     GetTotalCongressionalBills getTotalCongressionalBills;
@@ -29,14 +29,14 @@ public class ApplicationTests {
     @Test
     public void t1() {
         int bipartisanBills = getBipartisanCongressionalBills.execute();
-        int bills = getTotalCongressionalBills.execute();
-        int republicanOnlyBills = getAllRepublicanOnlyCongressionalBills.execute();
-        int democratOnlyBills = getAllDemocratOnlyCongressionalBills.execute();
-        int independentOnlyBills = getAllIndependentOnlyCongressionalBills.execute();
-        System.out.println("Total bills: " + bills);
         System.out.println("Total Bipartisan Bills: " + bipartisanBills);
-        System.out.println("Total Republican Bills: " + republicanOnlyBills);
-        System.out.println("Total Democrat Bills: " + democratOnlyBills);
-        System.out.println("Total Independent Bills: " + independentOnlyBills);
+        int bills = getTotalCongressionalBills.execute();
+        System.out.println("Total bills: " + bills);
+//        int republicanOnlyBills = getAllRepublicanOnlyCongressionalBills.execute();
+//        int democratOnlyBills = getAllDemocratOnlyCongressionalBills.execute();
+//        int independentOnlyBills = getAllIndependentOnlyCongressionalBills.execute();
+//        System.out.println("Total Republican Bills: " + republicanOnlyBills);
+//        System.out.println("Total Democrat Bills: " + democratOnlyBills);
+//        System.out.println("Total Independent Bills: " + independentOnlyBills);
     }
 }

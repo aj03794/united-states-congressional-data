@@ -29,7 +29,13 @@ class LoadCongressionalBillsAdapterTest {
     @DisplayName("Should unzip directory properly")
     @Test
     public void t1() {
-        loadCongressionalBillsPort.getAllCongressionalBills();
+        loadCongressionalBillsPort.getAllCongressionalBills(List.of("115", "116"));
+    }
+
+    @DisplayName("Testing out download zips with parallel stream")
+    @Test
+    public void t2() {
+        var res = loadCongressionalBillsAdapter.getAllCongressionalBills(List.of("108", "109", "110", "111", "116"));
     }
 
 }

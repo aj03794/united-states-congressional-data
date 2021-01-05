@@ -18,8 +18,8 @@ public interface MultipartService {
     File grabZip(@PathParam("congressionalHouse") String congressionalHouse, @PathParam("zipName") String zipName);
 
     @GET
-    @Path("/{congressionalHouse}/{zipName}")
+    @Path("/{zip}")
     @Produces("application/zip")
-    CompletionStage<File> grabZipAsync(@PathParam("congressionalHouse") String congressionalHouse, @PathParam("zipName") String zipName);
+    CompletionStage<File> grabZipAsync(@PathParam("zip") String zip);
 
 }
